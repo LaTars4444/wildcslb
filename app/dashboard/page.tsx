@@ -15,30 +15,31 @@ const sampleUser = {
 
 export default function DashboardPage() {
   return (
-    <main className="min-h-screen px-6 py-10">
-      <div className="mx-auto max-w-6xl space-y-8">
-        <section className="rounded-3xl border border-white/10 bg-zinc-950/80 p-8 shadow-xl shadow-black/20">
-          <p className="text-sm uppercase tracking-[0.2em] text-amber-300">Dashboard</p>
-          <h1 className="mt-2 text-3xl font-semibold text-white">Overview</h1>
-          <p className="mt-3 text-zinc-400">
+    <main className="relative min-h-screen px-6 py-10">
+      <div className="absolute inset-x-0 top-0 h-40 bg-[radial-gradient(circle_at_top,_rgba(124,58,237,0.16),transparent_18%)]" />
+      <div className="relative mx-auto max-w-6xl space-y-8">
+        <section className="rounded-[2rem] border border-[var(--border-color)] bg-[var(--surface-color)]/85 p-8 shadow-[0_30px_80px_-30px_rgba(0,0,0,0.6)] backdrop-blur-xl">
+          <p className="text-sm uppercase tracking-[0.22em] text-[var(--accent-color)]">Dashboard</p>
+          <h1 className="mt-2 text-3xl font-black text-[var(--text-primary)] sm:text-4xl">Overview</h1>
+          <p className="mt-3 text-[var(--text-secondary)]">
             This dashboard page is a starting point for your platform analytics and user activity.
           </p>
         </section>
 
         <div className="grid gap-6 xl:grid-cols-[1.5fr_1fr]">
-          <div className="rounded-3xl border border-white/10 bg-zinc-950/80 p-8 shadow-xl shadow-black/20">
+          <div className="rounded-[2rem] border border-[var(--border-color)] bg-[var(--surface-color)]/85 p-8 shadow-[0_30px_80px_-30px_rgba(0,0,0,0.6)]">
             <div className="grid gap-4 sm:grid-cols-3">
-              <div className="rounded-3xl bg-zinc-900/80 p-6 text-sm text-zinc-300">
-                <p className="text-zinc-400">Active users</p>
-                <p className="mt-3 text-3xl font-semibold text-white">1.2k</p>
+              <div className="rounded-[1.75rem] bg-[var(--elevated-color)]/80 p-6 text-sm text-[var(--text-secondary)]">
+                <p className="text-[var(--text-secondary)]">Active users</p>
+                <p className="mt-3 text-3xl font-black text-[var(--text-primary)]">1.2k</p>
               </div>
-              <div className="rounded-3xl bg-zinc-900/80 p-6 text-sm text-zinc-300">
-                <p className="text-zinc-400">Weekly volume</p>
-                <p className="mt-3 text-3xl font-semibold text-white">$72.4k</p>
+              <div className="rounded-[1.75rem] bg-[var(--elevated-color)]/80 p-6 text-sm text-[var(--text-secondary)]">
+                <p className="text-[var(--text-secondary)]">Weekly volume</p>
+                <p className="mt-3 text-3xl font-black text-[var(--text-primary)]">$72.4k</p>
               </div>
-              <div className="rounded-3xl bg-zinc-900/80 p-6 text-sm text-zinc-300">
-                <p className="text-zinc-400">Rewards issued</p>
-                <p className="mt-3 text-3xl font-semibold text-white">384</p>
+              <div className="rounded-[1.75rem] bg-[var(--elevated-color)]/80 p-6 text-sm text-[var(--text-secondary)]">
+                <p className="text-[var(--text-secondary)]">Rewards issued</p>
+                <p className="mt-3 text-3xl font-black text-[var(--text-primary)]">384</p>
               </div>
             </div>
           </div>

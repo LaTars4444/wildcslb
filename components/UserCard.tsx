@@ -2,24 +2,24 @@ import { User } from "@/lib/types";
 
 export default function UserCard({ user }: { user: User }) {
   return (
-    <div className="rounded-3xl border border-white/10 bg-zinc-950/80 p-6">
+    <div className="rounded-[1.75rem] border border-[var(--border-color)] bg-[var(--surface-color)]/85 p-6">
       <div className="flex items-center gap-4">
-        <div className="flex h-14 w-14 items-center justify-center rounded-full bg-amber-400 text-xl font-semibold text-zinc-950">
+        <div className="flex h-14 w-14 items-center justify-center rounded-full bg-[var(--accent-color)] text-xl font-semibold text-black">
           {user.username.charAt(0).toUpperCase()}
         </div>
         <div>
-          <p className="text-lg font-semibold text-white">{user.username}</p>
-          <p className="text-sm text-zinc-400">VIP {user.vipTier} • {user.streakDays}-day streak</p>
+          <p className="text-lg font-semibold text-[var(--text-primary)]">{user.username}</p>
+          <p className="text-sm text-[var(--text-secondary)]">VIP {user.vipTier} • {user.streakDays}-day streak</p>
         </div>
       </div>
       <div className="mt-6 grid gap-3 sm:grid-cols-2">
-        <div className="rounded-3xl bg-zinc-900/80 p-4 text-sm text-zinc-300">
-          <p className="text-zinc-400">Total wagered</p>
-          <p className="mt-1 text-white">${user.totalWagered.toFixed(0)}</p>
+        <div className="rounded-[1.75rem] bg-[var(--elevated-color)]/80 p-4 text-sm text-[var(--text-secondary)]">
+          <p className="text-[var(--text-secondary)]">Total wagered</p>
+          <p className="mt-1 text-[var(--text-primary)]">${user.totalWagered.toFixed(0)}</p>
         </div>
-        <div className="rounded-3xl bg-zinc-900/80 p-4 text-sm text-zinc-300">
-          <p className="text-zinc-400">Watch time</p>
-          <p className="mt-1 text-white">{user.watchTime}m</p>
+        <div className="rounded-[1.75rem] bg-[var(--elevated-color)]/80 p-4 text-sm text-[var(--text-secondary)]">
+          <p className="text-[var(--text-secondary)]">Watch time</p>
+          <p className="mt-1 text-[var(--text-primary)]">{user.watchTime}m</p>
         </div>
       </div>
     </div>
