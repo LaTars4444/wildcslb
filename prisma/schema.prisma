@@ -1,0 +1,45 @@
+datasource db {
+  provider = "postgresql"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id               String    @id @default(cuid())
+  username         String    @unique
+  avatar           String?
+  totalWagered     Float     @default(0)
+  weeklyWagered    Float     @default(0)
+  monthlyWagered   Float     @default(0)
+  tokens           Float     @default(0)
+  watchTime        Int       @default(0)
+  vipTier          String    @default("bronze")
+  streakDays       Int       @default(0)
+  connectedAccounts Json?
+
+  rewards          Reward[]
+  watchTimeEntries WatchTime[]
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+}
+
+model Reward {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  type      String
+  amount    Float
+  claimed   Boolean  @default(false)
+  claimedAt DateTime?
+  createdAt DateTime @default(now())
+}
+
+model WatchTime {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  minutes   Int
+  date      DateTime @default(now())
+}
