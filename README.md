@@ -11,10 +11,13 @@ A leaderboard and platform dashboard MVP built with Next.js, Prisma, and Tailwin
 
 ### Environment variables
 
-Create a `.env` or set the following environment variable in your deployment provider:
+Create a `.env` or set the following environment variables in your deployment provider:
 
 ```bash
 DATABASE_URL="postgresql://user:password@host:port/database"
+NEXT_PUBLIC_ADMIN_PASSWORD="your-secret-admin-password"
+NEXT_PUBLIC_KICK_CLIENT_ID="your-kick-client-id"
+NEXT_PUBLIC_KICK_REDIRECT_URI="https://your-domain.com/auth/kick/callback"
 ```
 
 ### Local setup

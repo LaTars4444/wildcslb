@@ -17,6 +17,9 @@ export default function Home() {
             <Link href="/leaderboard" className="rounded-full bg-[var(--accent-color)] px-6 py-3 text-sm font-bold uppercase tracking-[0.16em] text-black transition hover:brightness-110">
               View Leaderboard
             </Link>
+            <Link href="/store" className="rounded-full border border-[var(--border-color)] bg-[var(--surface-color)]/95 px-6 py-3 text-sm uppercase tracking-[0.16em] text-[var(--text-primary)] transition hover:border-[var(--primary-color)]">
+              Visit Store
+            </Link>
             <Link href="/dashboard" className="rounded-full border border-[var(--border-color)] bg-[var(--surface-color)]/95 px-6 py-3 text-sm uppercase tracking-[0.16em] text-[var(--text-primary)] transition hover:border-[var(--primary-color)]">
               Open Dashboard
             </Link>
@@ -31,9 +34,21 @@ export default function Home() {
             </p>
           </article>
           <article className="rounded-[1.75rem] border border-[var(--border-color)] bg-[var(--surface-color)]/80 p-6 shadow-[0_25px_60px_-30px_rgba(0,0,0,0.6)]">
+            <h2 className="text-lg font-semibold text-[var(--text-primary)]">Store rewards</h2>
+            <p className="mt-3 text-[var(--text-secondary)]">
+              Redeem play and watch tokens for cash vouchers and milestone rewards.
+            </p>
+          </article>
+          <article className="rounded-[1.75rem] border border-[var(--border-color)] bg-[var(--surface-color)]/80 p-6 shadow-[0_25px_60px_-30px_rgba(0,0,0,0.6)]">
             <h2 className="text-lg font-semibold text-[var(--text-primary)]">Community ready</h2>
             <p className="mt-3 text-[var(--text-secondary)]">
               A leaderboard-first experience with clean navigation, Discord CTA, and brand-forward page styling.
+            </p>
+          </article>
+          <article className="rounded-[1.75rem] border border-[var(--border-color)] bg-[var(--surface-color)]/80 p-6 shadow-[0_25px_60px_-30px_rgba(0,0,0,0.6)]">
+            <h2 className="text-lg font-semibold text-[var(--text-primary)]">Kick integration</h2>
+            <p className="mt-3 text-[var(--text-secondary)]">
+              Connect Kick to help track watch hours and support a stronger rewards experience.
             </p>
           </article>
           <article className="rounded-[1.75rem] border border-[var(--border-color)] bg-[var(--surface-color)]/80 p-6 shadow-[0_25px_60px_-30px_rgba(0,0,0,0.6)]">

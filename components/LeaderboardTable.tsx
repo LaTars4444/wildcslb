@@ -1,6 +1,12 @@
 import { User } from "@/lib/types";
 
-export default function LeaderboardTable({ users }: { users: User[] }) {
+export default function LeaderboardTable({
+  title,
+  users,
+}: {
+  title?: string;
+  users: User[];
+}) {
   if (!users?.length) {
     return (
       <div className="rounded-[1.75rem] border border-[var(--border-color)] bg-[var(--surface-color)]/85 p-8 text-center text-sm text-[var(--text-secondary)]">
@@ -11,6 +17,11 @@ export default function LeaderboardTable({ users }: { users: User[] }) {
 
   return (
     <div className="overflow-hidden rounded-[2rem] border border-[var(--border-color)] bg-[var(--surface-color)]/85 shadow-[0_40px_120px_-40px_rgba(0,0,0,0.6)]">
+      {title ? (
+        <div className="border-b border-[var(--border-color)] bg-[var(--elevated-color)]/95 px-6 py-4 text-sm uppercase tracking-[0.18em] text-[var(--text-secondary)]">
+          {title}
+        </div>
+      ) : null}
       <table className="min-w-full border-separate border-spacing-0 text-left">
         <thead className="bg-[var(--elevated-color)]/90 text-xs uppercase tracking-[0.16em] text-[var(--text-secondary)]">
           <tr>
