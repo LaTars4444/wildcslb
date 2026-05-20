@@ -67,8 +67,8 @@ export default function RootLayout({
             <div className="mx-auto flex max-w-7xl flex-col gap-4 md:flex-row md:items-center md:justify-between">
               <div className="flex items-center gap-4">
                 <p className="text-xs uppercase tracking-[0.28em]">© 2026 WILDCS</p>
-                <img src="/logos/tac.svg" alt="Terms & conditions" className="h-5 opacity-80" />
-                <img src="/logos/gamble-responsibly.svg" alt="Gamble help" className="h-5 opacity-80" />
+                <img src="https://curiouscurrie.gg/tac.svg" alt="Terms & conditions" className="h-5 opacity-70" />
+                <img src="https://curiouscurrie.gg/gamble-responsibly.svg" alt="Gamble responsibly" className="h-5 opacity-70" />
               </div>
               <p className="text-xs leading-relaxed max-w-2xl">Leaderboard, rewards, casinos.</p>
             </div>

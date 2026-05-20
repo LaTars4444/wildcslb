@@ -22,7 +22,7 @@ export default function LeaderboardPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const topPlayer = boards.daily[0] || boards.weekly[0] || boards.monthly[0];
+  const topPlayer = boards.all[0] || boards.daily[0] || boards.weekly[0] || boards.monthly[0];
 
   useEffect(() => {
     let isMounted = true;
