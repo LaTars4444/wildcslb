@@ -28,6 +28,24 @@ export default function ProfilePage() {
     setUser(null);
   };
 
+  const avatars = ["/avatars/avatar1.svg","/avatars/avatar2.svg","/avatars/avatar3.svg"];
+
+  const handleAvatar = (path: string) => {
+    if (!user) return;
+    const updated = { ...user, avatar: path } as User;
+    window.localStorage.setItem("wildcs_user", JSON.stringify(updated));
+    setUser(updated);
+  };
+
+  const getRank = (xp: number) => {
+    const thresholds = [0, 100, 300, 700, 1500, 3000];
+    let rank = 0;
+    for (let i = 0; i < thresholds.length; i++) {
+      if (xp >= thresholds[i]) rank = i;
+    }
+    return rank;
+  };
+
   return (
     <main className="min-h-screen px-6 py-10">
       <div className="mx-auto max-w-4xl">
@@ -47,8 +65,23 @@ export default function ProfilePage() {
               <p className="text-lg font-black">{user.username}</p>
               <p className="text-sm text-[var(--text-secondary)]">Tokens</p>
               <p className="text-xl font-black text-[var(--accent-color)]">{user.tokens}</p>
+              <p className="text-sm text-[var(--text-secondary)]">XP</p>
+              <p className="text-lg font-black">{user.xp ?? 0}</p>
+              <p className="text-sm text-[var(--text-secondary)]">Rank</p>
+              <p className="text-lg font-black">{getRank(user.xp ?? 0)}</p>
               <p className="text-sm text-[var(--text-secondary)]">Linked accounts</p>
               <p>{user.linkedKick ? "Kick linked" : "No linked accounts"}</p>
+
+              <div>
+                <p className="mt-4 text-sm text-[var(--text-secondary)]">Select avatar</p>
+                <div className="mt-2 flex gap-3">
+                  {avatars.map((a) => (
+                    <button key={a} onClick={() => handleAvatar(a)} className="rounded-md border p-1">
+                      <img src={a} alt="avatar" className="h-10 w-10 object-cover" />
+                    </button>
+                  ))}
+                </div>
+              </div>
 
               <div className="flex gap-3">
                 <button onClick={handleLogout} className="rounded-full border px-4 py-2">Log out</button>

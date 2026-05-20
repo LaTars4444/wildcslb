@@ -10,7 +10,7 @@ export default function RegisterPage() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!username) return;
-    const user = { username, tokens: 0, linkedKick: false };
+    const user = { username, tokens: 0, linkedKick: false, avatar: "/avatars/avatar1.svg", xp: 0 };
     window.localStorage.setItem("wildcs_user", JSON.stringify(user));
     window.localStorage.setItem("wildcs_tokens", "0");
     router.push("/profile");

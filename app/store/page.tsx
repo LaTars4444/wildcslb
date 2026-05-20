@@ -27,10 +27,10 @@ export default function StorePage() {
       <div className="absolute inset-x-0 top-0 h-52 bg-[radial-gradient(circle_at_top,_rgba(124,58,237,0.16),transparent_20%),radial-gradient(circle_at_70%_80%,_rgba(168,85,247,0.14),transparent_24%)]" />
       <div className="relative mx-auto max-w-6xl space-y-10">
         <section className="rounded-[2rem] border border-[var(--border-color)] bg-[var(--surface-color)]/85 p-10 shadow-[0_30px_80px_-30px_rgba(0,0,0,0.6)] backdrop-blur-xl">
-          <p className="text-sm uppercase tracking-[0.22em] text-[var(--accent-color)]">WildCS Store</p>
-          <h1 className="mt-2 text-3xl font-black text-[var(--text-primary)] sm:text-4xl">Redeem cash rewards with tokens</h1>
+          <p className="text-sm uppercase tracking-[0.22em] text-[var(--accent-color)]">Store</p>
+          <h1 className="mt-2 text-3xl font-black text-[var(--text-primary)] sm:text-4xl">Redeem rewards</h1>
           <p className="mt-4 max-w-3xl text-[var(--text-secondary)]">
-            Tokens are earned through play and watch time. Use them to redeem fixed cash rewards and claim milestone bonuses.
+            Token costs and available rewards.
           </p>
           <div className="mt-8 flex flex-wrap gap-4">
             <Link
@@ -45,6 +45,33 @@ export default function StorePage() {
             >
               View Leaderboards
             </Link>
+          </div>
+        </section>
+
+        <section className="rounded-[2rem] border border-[var(--border-color)] bg-[var(--surface-color)]/85 p-8 shadow-[0_30px_80px_-30px_rgba(0,0,0,0.6)]">
+          <h2 className="text-xl font-black text-[var(--text-primary)]">Partner Offers</h2>
+          <p className="mt-2 text-[var(--text-secondary)]">Available items and token cost.</p>
+          <div className="mt-4 grid grid-cols-2 gap-4 md:grid-cols-3">
+            <div className="rounded-md border p-4 text-center">
+              <img src="/logos/daddy.svg" alt="Daddy Skins" className="mx-auto h-10" />
+              <div className="mt-2 text-lg font-black">Daddy Skins</div>
+              <div className="text-sm text-[var(--text-secondary)]">Cost: 1200 tokens</div>
+            </div>
+            <div className="rounded-md border p-4 text-center">
+              <img src="/logos/skins.svg" alt="Skins" className="mx-auto h-10" />
+              <div className="mt-2 text-lg font-black">Skins</div>
+              <div className="text-sm text-[var(--text-secondary)]">Cost: 800 tokens</div>
+            </div>
+            <div className="rounded-md border p-4 text-center">
+              <img src="/logos/chips.svg" alt="Chips" className="mx-auto h-10" />
+              <div className="mt-2 text-lg font-black">Chips</div>
+              <div className="text-sm text-[var(--text-secondary)]">Cost: 500 tokens</div>
+            </div>
+            <div className="rounded-md border p-4 text-center">
+              <img src="/logos/clash.svg" alt="Clash" className="mx-auto h-10" />
+              <div className="mt-2 text-lg font-black">Clash</div>
+              <div className="text-sm text-[var(--text-secondary)]">Cost: 1000 tokens</div>
+            </div>
           </div>
         </section>
 

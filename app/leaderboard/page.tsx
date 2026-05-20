@@ -70,12 +70,12 @@ export default function LeaderboardPage() {
         <section className="rounded-[2rem] border border-[var(--border-color)] bg-[var(--surface-color)]/85 p-8 shadow-[0_30px_80px_-30px_rgba(0,0,0,0.6)] backdrop-blur-xl">
           <div className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
             <div>
-              <p className="text-sm uppercase tracking-[0.24em] text-[var(--accent-color)]">Live Leaderboards</p>
+              <p className="text-sm uppercase tracking-[0.24em] text-[var(--accent-color)]">Leaderboards</p>
               <h1 className="mt-2 text-3xl font-black text-[var(--text-primary)] sm:text-4xl">
-                Leaderboard first. Top player front and center.
+                Leaderboard & Rewards
               </h1>
               <p className="mt-3 max-w-2xl text-[var(--text-secondary)]">
-                The leaderboard is the first thing users see, with the top spot and token totals up front.
+                Top players and redeemable rewards.
               </p>
             </div>
             <div className="rounded-[2rem] bg-[var(--accent-color)]/10 px-6 py-5 text-right">

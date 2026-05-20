@@ -1,4 +1,5 @@
 import { User } from "@/lib/types";
+import Link from "next/link";
 
 export default function LeaderboardTable({
   title,
@@ -31,6 +32,7 @@ export default function LeaderboardTable({
             <th className="px-4 py-4">Tokens</th>
             <th className="px-4 py-4">Watch</th>
             <th className="px-4 py-4">VIP Tier</th>
+            <th className="px-4 py-4">Claim</th>
           </tr>
         </thead>
         <tbody>
@@ -52,6 +54,9 @@ export default function LeaderboardTable({
               <td className="px-4 py-4 text-sm text-[var(--text-primary)]">{user.tokens.toFixed(0)}</td>
               <td className="px-4 py-4 text-sm text-[var(--text-primary)]">{user.watchTime}m</td>
               <td className="px-4 py-4 text-sm text-[var(--accent-color)]">{user.vipTier}</td>
+              <td className="px-4 py-4">
+                <Link href={`/claim?user=${encodeURIComponent(user.username)}`} className="rounded-full border px-3 py-1 text-sm font-semibold">Claim</Link>
+              </td>
             </tr>
           ))}
         </tbody>

@@ -3,6 +3,17 @@
 import { useState } from "react";
 import Link from "next/link";
 
+type Pending = { id: string; username: string; amount: number; status: string; createdAt: string };
+
+const getRank = (xp: number) => {
+  const thresholds = [0, 100, 300, 700, 1500, 3000];
+  let rank = 0;
+  for (let i = 0; i < thresholds.length; i++) {
+    if (xp >= thresholds[i]) rank = i;
+  }
+  return rank;
+};
+
 export default function AdminPage() {
   const [authorized, setAuthorized] = useState(() => {
     if (typeof window === "undefined") {
@@ -14,6 +25,61 @@ export default function AdminPage() {
   const handleLogout = () => {
     window.localStorage.removeItem("wildcs_admin_auth");
     setAuthorized(false);
+  };
+
+  const [pending, setPending] = useState<Pending[]>(() => {
+    if (typeof window === "undefined") return [];
+    const raw = window.localStorage.getItem("wildcs_pending_claims");
+    return raw ? JSON.parse(raw) : [];
+  });
+
+  const refreshPending = () => {
+    const raw = window.localStorage.getItem("wildcs_pending_claims");
+    setPending(raw ? JSON.parse(raw) : []);
+  };
+
+  const approve = (id: string) => {
+    const raw = window.localStorage.getItem("wildcs_pending_claims");
+    if (!raw) return;
+    const list: Pending[] = JSON.parse(raw);
+    const idx = list.findIndex((p) => p.id === id);
+    if (idx === -1) return;
+    const claim = list[idx];
+
+    // load stored user
+    const userRaw = window.localStorage.getItem("wildcs_user");
+    if (!userRaw) {
+      // nothing to update
+      list.splice(idx, 1);
+      window.localStorage.setItem("wildcs_pending_claims", JSON.stringify(list));
+      refreshPending();
+      return;
+    }
+    const user = JSON.parse(userRaw);
+
+    // calculate rank-based multiplier
+    const rank = getRank(user.xp ?? 0);
+    const multiplier = Math.pow(1.15, rank);
+    const granted = Math.round(claim.amount * multiplier);
+
+    user.tokens = (user.tokens || 0) + granted;
+    user.xp = (user.xp || 0) + claim.amount * 5;
+
+    window.localStorage.setItem("wildcs_user", JSON.stringify(user));
+
+    // remove claim
+    list.splice(idx, 1);
+    window.localStorage.setItem("wildcs_pending_claims", JSON.stringify(list));
+    refreshPending();
+  };
+
+  const reject = (id: string) => {
+    const raw = window.localStorage.getItem("wildcs_pending_claims");
+    if (!raw) return;
+    const list: Pending[] = JSON.parse(raw);
+    const newList = list.filter((p) => p.id !== id);
+    window.localStorage.setItem("wildcs_pending_claims", JSON.stringify(newList));
+    refreshPending();
   };
 
   if (!authorized) {
@@ -69,6 +135,27 @@ export default function AdminPage() {
         >
           Sign out
         </button>
+      </div>
+      <div className="mt-8">
+        <h2 className="text-xl font-black">Pending Claims</h2>
+        <div className="mt-4 space-y-3">
+          {pending.length === 0 ? (
+            <div className="text-sm text-[var(--text-secondary)]">No pending claims.</div>
+          ) : (
+            pending.map((p) => (
+              <div key={p.id} className="flex items-center justify-between rounded-md border p-3">
+                <div>
+                  <div className="font-medium">{p.username}</div>
+                  <div className="text-sm text-[var(--text-secondary)]">{p.amount} tokens — {new Date(p.createdAt).toLocaleString()}</div>
+                </div>
+                <div className="flex gap-2">
+                  <button onClick={() => approve(p.id)} className="rounded-md bg-green-500 px-3 py-1 text-sm text-black">Approve</button>
+                  <button onClick={() => reject(p.id)} className="rounded-md bg-red-500 px-3 py-1 text-sm text-black">Reject</button>
+                </div>
+              </div>
+            ))
+          )}
+        </div>
       </div>
     </main>
   );

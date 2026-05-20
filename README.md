@@ -20,6 +20,17 @@ NEXT_PUBLIC_KICK_CLIENT_ID="your-kick-client-id"
 NEXT_PUBLIC_KICK_REDIRECT_URI="https://your-domain.com/auth/kick/callback"
 ```
 
+### Encryption helper
+ - To encrypt sensitive strings locally (do NOT paste secrets into source), run:
+ ```bash
+ node scripts/encrypt.js "your-secret-here" "a-strong-passphrase"
+ ```
+ - The script prints a base64 payload you can store as an env var. Keep the passphrase secret.
+
+### Claim and auth
+ - Claim links are available on leaderboard rows and lead to `/claim?user={id}`.
+ - Log in and Sign up buttons are in the nav; accounts are stored client-side in `localStorage` (stubbed). Replace with real backend for production.
+
 ### Local setup
 
 ```bash
