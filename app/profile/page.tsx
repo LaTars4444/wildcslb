@@ -55,11 +55,8 @@ export default function ProfilePage() {
           <h1 className="text-2xl font-black">Profile</h1>
           {!user ? (
             <div className="mt-6 space-y-4">
-              <p className="text-[var(--text-secondary)]">No account found. You can create one or log in.</p>
-              <div className="flex gap-3">
-                <Link href="/auth/login" className="rounded-full bg-[var(--accent-color)] px-5 py-2 font-semibold">Log in</Link>
-                <Link href="/auth/register" className="rounded-full border px-5 py-2">Create account</Link>
-              </div>
+              <p className="text-[var(--text-secondary)]">No account found. Sign in to access your tokens and rank.</p>
+              <Link href="/auth/login" className="inline-flex rounded-full bg-[var(--accent-color)] px-5 py-3 font-semibold">Log in</Link>
             </div>
           ) : (
             <div className="mt-6 space-y-6">
@@ -99,9 +96,11 @@ export default function ProfilePage() {
                 </div>
               </div>
 
-              <div className="flex gap-3">
-                <button onClick={handleLogout} className="rounded-full border px-4 py-2">Log out</button>
-                <Link href="/store" className="rounded-full bg-[var(--accent-color)] px-4 py-2 font-semibold">Redeem</Link>
+              <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+                <Link href="/store" className="inline-flex rounded-full bg-[var(--accent-color)] px-5 py-3 font-semibold">Redeem tokens</Link>
+                <button onClick={handleLogout} className="text-sm text-[var(--text-secondary)] underline-offset-4 transition hover:text-[var(--text-primary)]">
+                  Sign out
+                </button>
               </div>
             </div>
           )}

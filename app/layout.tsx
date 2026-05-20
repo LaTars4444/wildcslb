@@ -57,9 +57,8 @@ export default function RootLayout({
                 <Link href="/auth/login" className="rounded-full border border-[var(--border-color)] px-4 py-2 text-sm">Log in</Link>
                 <Link href="/auth/register" className="rounded-full bg-[var(--accent-color)] px-4 py-2 text-sm font-semibold">Sign up</Link>
               </div>
-              <TokenDisplay />
-              <a href="https://discord.gg/TQeKGwfe28" target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 rounded-xl border border-[var(--border-color)] bg-gradient-to-br from-[var(--primary-color)] to-[var(--accent-color)] px-4 py-3 text-sm font-black uppercase tracking-[0.18em] text-black shadow-lg shadow-[0_20px_60px_rgba(124,58,237,0.18)] transition hover:shadow-[0_20px_80px_rgba(124,58,237,0.26)]">
-                Join Discord
+              <a href="https://discord.gg/TQeKGwfe28" target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 rounded-xl border border-[var(--border-color)] bg-[var(--surface-color)]/95 px-4 py-3 text-sm font-black uppercase tracking-[0.18em] text-[var(--text-primary)] transition hover:border-[var(--accent-color)] hover:text-[var(--accent-color)]">
+                Discord
               </a>
             </div>
           </nav>
@@ -70,8 +69,8 @@ export default function RootLayout({
             <div className="mx-auto flex max-w-7xl flex-col gap-4 md:flex-row md:items-center md:justify-between">
               <div className="flex items-center gap-4">
                 <p className="text-xs uppercase tracking-[0.28em]">© 2026 WILDCS</p>
-                <img src="/logos/tac.svg" alt="T&C" className="h-6" />
-                <img src="/logos/gamble-responsibly.svg" alt="Gamble Responsibly" className="h-6" />
+                <img src="/logos/tac.svg" alt="Terms & conditions" className="h-5 opacity-80" />
+                <img src="/logos/gamble-responsibly.svg" alt="Gamble help" className="h-5 opacity-80" />
               </div>
               <p className="text-xs leading-relaxed max-w-2xl">Leaderboard, rewards, casinos.</p>
             </div>
