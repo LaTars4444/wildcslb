@@ -108,6 +108,31 @@ export default function LeaderboardTable({
               </td>
             </tr>
           ))}
+
+          {users.length < placeholders.length &&
+            placeholders.slice(users.length).map((item, index) => (
+              <tr key={item.id} className="border-t border-[var(--border-color)] hover:bg-[rgba(255,255,255,0.04)]">
+                <td className="px-4 py-4 text-sm text-[var(--text-secondary)]">{users.length + index + 1}</td>
+                <td className="flex items-center gap-3 px-4 py-4">
+                  <div className="relative h-16 w-16 overflow-hidden rounded-3xl border border-[var(--border-color)] bg-[var(--bg-color)]">
+                    <Image src={item.logo} alt={item.name} fill sizes="64px" className="object-contain p-3" />
+                  </div>
+                  <div>
+                    <div className="font-medium text-[var(--text-primary)]">{item.name}</div>
+                    <div className="text-sm text-[var(--text-secondary)]">Reward placeholder</div>
+                  </div>
+                </td>
+                <td className="px-4 py-4 text-sm text-[var(--text-secondary)]">—</td>
+                <td className="px-4 py-4 text-sm text-[var(--text-secondary)]">—</td>
+                <td className="px-4 py-4 text-sm text-[var(--text-secondary)]">—</td>
+                <td className="px-4 py-4 text-sm text-[var(--accent-color)]">{item.vip}</td>
+                <td className="px-4 py-4">
+                  <button disabled className="rounded-full border border-[var(--border-color)] bg-[var(--surface-color)]/80 px-3 py-1 text-sm text-[var(--text-secondary)]">
+                    {item.status}
+                  </button>
+                </td>
+              </tr>
+            ))}
         </tbody>
       </table>
     </div>

@@ -68,7 +68,8 @@ export default function RootLayout({
               <div className="flex items-center gap-4">
                 <p className="text-xs uppercase tracking-[0.28em]">© 2026 WILDCS</p>
                 <img src="https://curiouscurrie.gg/tac.svg" alt="Terms & conditions" className="h-5 opacity-70" />
-                <img src="https://curiouscurrie.gg/gamble-responsibly.svg" alt="Gamble responsibly" className="h-5 opacity-70" />
+                <img src="/logos/gamstop.svg" alt="GamStop" className="h-5 opacity-70" />
+                <img src="/logos/gamble-help.svg" alt="Gamble help" className="h-5 opacity-70" />
               </div>
               <p className="text-xs leading-relaxed max-w-2xl">Leaderboard, rewards, casinos.</p>
             </div>
