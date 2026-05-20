@@ -5,13 +5,39 @@ import Link from "next/link";
 
 type Pending = { id: string; username: string; amount: number; status: string; createdAt: string };
 
-const getRank = (xp: number) => {
-  const thresholds = [0, 100, 300, 700, 1500, 3000];
-  let rank = 0;
+const rankNames = [
+  "Bronze",
+  "Bronze II",
+  "Bronze I",
+  "Iron",
+  "Iron II",
+  "Silver",
+  "Silver II",
+  "Gold",
+  "Gold II",
+  "Platinum",
+  "Platinum II",
+  "Diamond",
+  "Diamond II",
+  "Emerald",
+  "Sapphire",
+  "Amethyst",
+  "Topaz",
+  "Obsidian",
+  "Titanium",
+  "Ruby",
+];
+
+const getRankIndex = (xp: number) => {
+  const thresholds = [
+    0, 50, 120, 210, 330, 480, 660, 870, 1100, 1360,
+    1650, 1960, 2300, 2660, 3040, 3440, 3860, 4300, 4760, 5240,
+  ];
+  let idx = 0;
   for (let i = 0; i < thresholds.length; i++) {
-    if (xp >= thresholds[i]) rank = i;
+    if (xp >= thresholds[i]) idx = i;
   }
-  return rank;
+  return Math.min(idx, rankNames.length - 1);
 };
 
 export default function AdminPage() {
@@ -58,7 +84,7 @@ export default function AdminPage() {
     const user = JSON.parse(userRaw);
 
     // calculate rank-based multiplier
-    const rank = getRank(user.xp ?? 0);
+    const rank = getRankIndex(user.xp ?? 0);
     const multiplier = Math.pow(1.15, rank);
     const granted = Math.round(claim.amount * multiplier);
 

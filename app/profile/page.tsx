@@ -1,27 +1,29 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
+import { getRankIndex, rankNames, thresholds, getNextThreshold, getMultiplier } from "@/lib/ranks";
 
 type User = {
   username: string;
   tokens: number;
   linkedKick?: boolean;
+  avatar?: string | null;
+  xp?: number;
 };
 
 export default function ProfilePage() {
-  const [user, setUser] = useState<User | null>(null);
-
-  useEffect(() => {
+  const [user, setUser] = useState<User | null>(() => {
+    if (typeof window === "undefined") return null;
     const raw = window.localStorage.getItem("wildcs_user");
-    if (raw) {
-      try {
-        setUser(JSON.parse(raw));
-      } catch {
-        setUser(null);
-      }
+    if (!raw) return null;
+
+    try {
+      return JSON.parse(raw);
+    } catch {
+      return null;
     }
-  }, []);
+  });
 
   const handleLogout = () => {
     window.localStorage.removeItem("wildcs_user");
@@ -37,14 +39,14 @@ export default function ProfilePage() {
     setUser(updated);
   };
 
-  const getRank = (xp: number) => {
-    const thresholds = [0, 100, 300, 700, 1500, 3000];
-    let rank = 0;
-    for (let i = 0; i < thresholds.length; i++) {
-      if (xp >= thresholds[i]) rank = i;
-    }
-    return rank;
-  };
+  const xp = user?.xp ?? 0;
+  const rankIndex = getRankIndex(xp);
+  const rankName = rankNames[rankIndex];
+  const nextThreshold = getNextThreshold(xp);
+  const next = nextThreshold.next;
+  const current = thresholds[rankIndex];
+  const progress = next > current ? Math.round(((xp - current) / (next - current)) * 100) : 100;
+  const multiplier = getMultiplier(rankIndex);
 
   return (
     <main className="min-h-screen px-6 py-10">
@@ -60,15 +62,29 @@ export default function ProfilePage() {
               </div>
             </div>
           ) : (
-            <div className="mt-6 space-y-4">
+            <div className="mt-6 space-y-6">
+              <div className="flex items-center gap-6">
+                <img src={`/ranks/rank-${rankIndex}.svg`} alt={rankName} className="h-20 w-20 rounded-md" />
+                <div>
+                  <p className="text-sm text-[var(--text-secondary)]">{rankName}</p>
+                  <p className="text-2xl font-black">{xp} XP</p>
+                  <p className="text-sm text-[var(--text-secondary)]">Multiplier: x{multiplier.toFixed(2)}</p>
+                </div>
+              </div>
+
+              <div>
+                <div className="h-3 w-full rounded-full bg-[var(--elevated-color)]/60">
+                  <div className="h-3 rounded-full bg-[var(--accent-color)]" style={{ width: `${progress}%` }} />
+                </div>
+                <p className="mt-2 text-sm text-[var(--text-secondary)]">{progress}% to next rank ({next - xp} XP)</p>
+              </div>
+
               <p className="text-sm text-[var(--text-secondary)]">Username</p>
               <p className="text-lg font-black">{user.username}</p>
+
               <p className="text-sm text-[var(--text-secondary)]">Tokens</p>
               <p className="text-xl font-black text-[var(--accent-color)]">{user.tokens}</p>
-              <p className="text-sm text-[var(--text-secondary)]">XP</p>
-              <p className="text-lg font-black">{user.xp ?? 0}</p>
-              <p className="text-sm text-[var(--text-secondary)]">Rank</p>
-              <p className="text-lg font-black">{getRank(user.xp ?? 0)}</p>
+
               <p className="text-sm text-[var(--text-secondary)]">Linked accounts</p>
               <p>{user.linkedKick ? "Kick linked" : "No linked accounts"}</p>
 
@@ -90,77 +106,6 @@ export default function ProfilePage() {
             </div>
           )}
         </section>
-      </div>
-    </main>
-  );
-}
-import Link from "next/link";
-import UserCard from "@/components/UserCard";
-
-const sampleUser = {
-  id: "profile-user",
-  username: "WildPlayer",
-  totalWagered: 18250,
-  weeklyWagered: 4800,
-  monthlyWagered: 13200,
-  tokens: 1420,
-  watchTime: 895,
-  vipTier: "gold",
-  streakDays: 18,
-  avatar: null,
-};
-
-export default function ProfilePage() {
-  return (
-    <main className="relative min-h-screen px-6 py-10">
-      <div className="absolute inset-x-0 top-0 h-40 bg-[radial-gradient(circle_at_top,_rgba(124,58,237,0.16),transparent_18%)]" />
-      <div className="relative mx-auto max-w-6xl space-y-8">
-        <section className="rounded-[2rem] border border-[var(--border-color)] bg-[var(--surface-color)]/85 p-8 shadow-[0_30px_80px_-30px_rgba(0,0,0,0.6)] backdrop-blur-xl">
-          <p className="text-sm uppercase tracking-[0.22em] text-[var(--accent-color)]">Profile</p>
-          <h1 className="mt-2 text-3xl font-black text-[var(--text-primary)] sm:text-4xl">Linked accounts and token balance</h1>
-          <p className="mt-3 text-[var(--text-secondary)]">
-            See what is connected, how many tokens are available, and access leaderboard progress.
-          </p>
-        </section>
-
-        <div className="grid gap-6 xl:grid-cols-[1.5fr_1fr]">
-          <UserCard user={sampleUser} />
-
-          <div className="rounded-[2rem] border border-[var(--border-color)] bg-[var(--surface-color)]/85 p-8 shadow-[0_30px_80px_-30px_rgba(0,0,0,0.6)]">
-            <div className="flex items-center justify-between gap-4">
-              <div>
-                <p className="text-sm uppercase tracking-[0.18em] text-[var(--accent-color)]">Token balance</p>
-                <p className="mt-4 text-5xl font-black text-[var(--accent-color)]">1,420</p>
-              </div>
-              <div className="rounded-full bg-[var(--accent-color)]/90 px-4 py-3 text-sm font-bold text-black uppercase tracking-[0.18em]">
-                TOKENS
-              </div>
-            </div>
-
-            <div className="mt-8 space-y-4">
-              <div className="rounded-[1.75rem] bg-[var(--elevated-color)]/90 p-5">
-                <p className="text-sm uppercase tracking-[0.18em] text-[var(--accent-color)]">Connected services</p>
-                <ul className="mt-4 space-y-2 text-[var(--text-secondary)]">
-                  <li>Kick connected</li>
-                  <li>Discord account linked</li>
-                  <li>Email login enabled</li>
-                </ul>
-              </div>
-
-              <div className="rounded-[1.75rem] bg-[var(--elevated-color)]/90 p-5">
-                <p className="text-sm uppercase tracking-[0.18em] text-[var(--accent-color)]">Profile links</p>
-                <div className="mt-4 flex flex-col gap-3 text-sm">
-                  <Link href="/leaderboard" className="inline-flex rounded-full border border-[var(--border-color)] bg-[var(--surface-color)]/95 px-4 py-3 text-[var(--text-primary)] transition hover:border-[var(--accent-color)]">
-                    View leaderboard progress
-                  </Link>
-                  <Link href="/store" className="inline-flex rounded-full border border-[var(--border-color)] bg-[var(--surface-color)]/95 px-4 py-3 text-[var(--text-primary)] transition hover:border-[var(--accent-color)]">
-                    Open rewards store
-                  </Link>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
     </main>
   );
