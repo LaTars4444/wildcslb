@@ -3,7 +3,6 @@ import Link from "next/link";
 import Image from "next/image";
 import { Exo } from "next/font/google";
 import "./globals.css";
-import TokenDisplay from "@/components/TokenDisplay";
 
 const exo = Exo({
   subsets: ["latin"],
@@ -42,7 +41,6 @@ export default function RootLayout({
                     </span>
                   </div>
                 </Link>
-                <TokenDisplay />
               </div>
               <div className="hidden items-center gap-3 md:flex">
                 <Link href="/leaderboard" className="inline-flex items-center gap-2 rounded-full border border-[var(--border-color)] bg-[var(--surface-color)]/95 px-4 py-3 text-sm font-black uppercase tracking-[0.18em] text-[var(--text-primary)] transition hover:border-[var(--accent-color)] hover:text-[var(--accent-color)]">

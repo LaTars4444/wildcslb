@@ -9,6 +9,7 @@ const leaderboardBoards = [
   { value: "daily" as Period, label: "Daily Leaders" },
   { value: "weekly" as Period, label: "Weekly Leaders" },
   { value: "monthly" as Period, label: "Monthly Leaders" },
+  { value: "all" as Period, label: "All Ranks" },
 ];
 
 export default function LeaderboardPage() {
@@ -43,7 +44,7 @@ export default function LeaderboardPage() {
           daily: results[0],
           weekly: results[1],
           monthly: results[2],
-          all: [],
+          all: results[3],
         });
       } catch {
         if (isMounted) {
