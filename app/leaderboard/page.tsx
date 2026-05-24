@@ -12,10 +12,22 @@ const leaderboardBoards = [
   { value: "all" as Period, label: "All Ranks" },
 ];
 
-function getTimeUntil(targetHour: number): string {
+function getTimeUntilNextMonth(): string {
+  const now = new Date();
+  const target = new Date(now.getFullYear(), now.getMonth() + 1, 1, 0, 0, 0, 0);
+  
+  const diff = target.getTime() - now.getTime();
+  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+  const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+  
+  return `${days}d ${hours}h ${minutes}m`;
+}
+
+function getTimeUntilRaffleDrawDay(): string {
   const now = new Date();
   const target = new Date(now);
-  target.setHours(targetHour, 0, 0, 0);
+  target.setHours(20, 0, 0, 0);
   
   if (now > target) {
     target.setDate(target.getDate() + 1);
@@ -45,8 +57,8 @@ export default function LeaderboardPage() {
 
   useEffect(() => {
     const updateTimers = () => {
-      setLeaderboardTimer(getTimeUntil(0)); // Resets at midnight
-      setRaffleTimer(getTimeUntil(20)); // Raffle draws at 8 PM EST
+      setLeaderboardTimer(getTimeUntilNextMonth()); // Resets first of next month
+      setRaffleTimer(getTimeUntilRaffleDrawDay()); // Raffle draws at 8 PM EST
     };
     
     updateTimers();
@@ -131,9 +143,9 @@ export default function LeaderboardPage() {
             </p>
           </div>
           <div className="rounded-[2rem] border border-[var(--border-color)] bg-[var(--surface-color)]/90 p-8 shadow-[0_30px_80px_-30px_rgba(0,0,0,0.6)]">
-            <p className="text-sm uppercase tracking-[0.18em] text-[var(--accent-color)]">Leaderboard resets in</p>
+            <p className="text-sm uppercase tracking-[0.18em] text-[var(--accent-color)]">Monthly leaderboard resets in</p>
             <p className="mt-4 text-3xl font-black text-[var(--text-primary)]">{leaderboardTimer}</p>
-            <p className="mt-3 text-sm text-[var(--text-secondary)]">Daily leaderboard resets at midnight EST</p>
+            <p className="mt-3 text-sm text-[var(--text-secondary)]">Leaderboard resets on the first of each month</p>
           </div>
           <div className="rounded-[2rem] border border-[var(--border-color)] bg-[var(--surface-color)]/90 p-8 shadow-[0_30px_80px_-30px_rgba(0,0,0,0.6)]">
             <p className="text-sm uppercase tracking-[0.18em] text-[var(--accent-color)]">Raffle draws in</p>
