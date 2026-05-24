@@ -12,6 +12,23 @@ const leaderboardBoards = [
   { value: "all" as Period, label: "All Ranks" },
 ];
 
+function getTimeUntil(targetHour: number): string {
+  const now = new Date();
+  const target = new Date(now);
+  target.setHours(targetHour, 0, 0, 0);
+  
+  if (now > target) {
+    target.setDate(target.getDate() + 1);
+  }
+  
+  const diff = target.getTime() - now.getTime();
+  const hours = Math.floor(diff / (1000 * 60 * 60));
+  const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+  const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+  
+  return `${hours}h ${minutes}m ${seconds}s`;
+}
+
 export default function LeaderboardPage() {
   const [boards, setBoards] = useState<Record<Period, User[]>>({
     daily: [],
@@ -21,8 +38,21 @@ export default function LeaderboardPage() {
   });
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [leaderboardTimer, setLeaderboardTimer] = useState("00h 00m 00s");
+  const [raffleTimer, setRaffleTimer] = useState("00h 00m 00s");
 
   const topPlayer = boards.all[0] || boards.daily[0] || boards.weekly[0] || boards.monthly[0];
+
+  useEffect(() => {
+    const updateTimers = () => {
+      setLeaderboardTimer(getTimeUntil(0)); // Resets at midnight
+      setRaffleTimer(getTimeUntil(20)); // Raffle draws at 8 PM EST
+    };
+    
+    updateTimers();
+    const interval = setInterval(updateTimers, 1000);
+    return () => clearInterval(interval);
+  }, []);
 
   useEffect(() => {
     let isMounted = true;
@@ -88,7 +118,7 @@ export default function LeaderboardPage() {
           </div>
         </section>
 
-        <section className="grid gap-6 xl:grid-cols-[1.6fr_1fr]">
+        <section className="grid gap-6 xl:grid-cols-3">
           <div className="rounded-[2rem] border border-[var(--border-color)] bg-[var(--surface-color)]/90 p-8 shadow-[0_30px_80px_-30px_rgba(0,0,0,0.6)]">
             <p className="text-sm uppercase tracking-[0.18em] text-[var(--accent-color)]">Top player</p>
             <h2 className="mt-4 text-3xl font-black text-[var(--text-primary)]">
@@ -101,10 +131,14 @@ export default function LeaderboardPage() {
             </p>
           </div>
           <div className="rounded-[2rem] border border-[var(--border-color)] bg-[var(--surface-color)]/90 p-8 shadow-[0_30px_80px_-30px_rgba(0,0,0,0.6)]">
-            <p className="text-sm uppercase tracking-[0.18em] text-[var(--accent-color)]">Leaderboard insight</p>
-            <p className="mt-4 text-[var(--text-secondary)]">
-              The top player is pulled from the active leaderboard and displayed as the primary spot.
-            </p>
+            <p className="text-sm uppercase tracking-[0.18em] text-[var(--accent-color)]">Leaderboard resets in</p>
+            <p className="mt-4 text-3xl font-black text-[var(--text-primary)]">{leaderboardTimer}</p>
+            <p className="mt-3 text-sm text-[var(--text-secondary)]">Daily leaderboard resets at midnight EST</p>
+          </div>
+          <div className="rounded-[2rem] border border-[var(--border-color)] bg-[var(--surface-color)]/90 p-8 shadow-[0_30px_80px_-30px_rgba(0,0,0,0.6)]">
+            <p className="text-sm uppercase tracking-[0.18em] text-[var(--accent-color)]">Raffle draws in</p>
+            <p className="mt-4 text-3xl font-black text-[var(--text-primary)]">{raffleTimer}</p>
+            <p className="mt-3 text-sm text-[var(--text-secondary)]">$25 weekly raffle at 8 PM EST</p>
           </div>
         </section>
 
