@@ -258,13 +258,13 @@ export default function StorePage() {
             <div className="rounded-[1.75rem] border border-[var(--border-color)] bg-[var(--bg-color)]/80 p-5">
               <p className="text-sm uppercase tracking-[0.18em] text-[var(--text-secondary)]">Bonus buy</p>
               <p className="mt-2 text-3xl font-black text-[var(--text-primary)]">$40</p>
-              <p className="mt-2 text-sm text-[var(--text-secondary)]">1 token = $40 bonus buy</p>
+              <p className="mt-2 text-sm text-[var(--text-secondary)]">500 tokens = $40 bonus buy</p>
               <p className="mt-1 text-xs text-[var(--text-secondary)]">Winnings split with house</p>
               <button
-                disabled={!user || (user.tokens ?? 0) < 1}
+                disabled={!user || (user.tokens ?? 0) < 500}
                 className="mt-5 rounded-full border border-[var(--border-color)] bg-[var(--accent-color)] px-4 py-2 text-sm font-black uppercase tracking-[0.14em] text-black transition hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-50"
               >
-                {!user ? "Log in" : (user.tokens ?? 0) < 1 ? "Locked" : "Purchase"}
+                {!user ? "Log in" : (user.tokens ?? 0) < 500 ? "Locked" : "Purchase"}
               </button>
             </div>
 
