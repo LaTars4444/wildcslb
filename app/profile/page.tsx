@@ -10,6 +10,9 @@ type User = {
   linkedKick?: boolean;
   avatar?: string | null;
   xp?: number;
+  clashId?: string;
+  chipsId?: string;
+  daddySkinsId?: string;
 };
 
 export default function ProfilePage() {
@@ -35,6 +38,14 @@ export default function ProfilePage() {
   const handleAvatar = (path: string) => {
     if (!user) return;
     const updated = { ...user, avatar: path } as User;
+    window.localStorage.setItem("wildcs_user", JSON.stringify(updated));
+    setUser(updated);
+  };
+
+  const handlePlatformIdUpdate = (platform: "clash" | "chips" | "daddySkins", value: string) => {
+    if (!user) return;
+    const key = platform === "clash" ? "clashId" : platform === "chips" ? "chipsId" : "daddySkinsId";
+    const updated = { ...user, [key]: value } as User;
     window.localStorage.setItem("wildcs_user", JSON.stringify(updated));
     setUser(updated);
   };
@@ -82,8 +93,39 @@ export default function ProfilePage() {
               <p className="text-sm text-[var(--text-secondary)]">Tokens</p>
               <p className="text-xl font-black text-[var(--accent-color)]">{user.tokens}</p>
 
-              <p className="text-sm text-[var(--text-secondary)]">Linked accounts</p>
-              <p>{user.linkedKick ? "Kick linked" : "No linked accounts"}</p>
+              <p className="text-sm text-[var(--text-secondary)]">Gaming Platform IDs</p>
+              <div className="mt-2 space-y-3">
+                <div>
+                  <label className="text-xs text-[var(--text-secondary)]">Clash User ID</label>
+                  <input
+                    type="text"
+                    value={user.clashId ?? ""}
+                    onChange={(e) => handlePlatformIdUpdate("clash", e.target.value)}
+                    placeholder="Enter your Clash ID"
+                    className="mt-1 w-full rounded-md border border-[var(--border-color)] bg-[var(--bg-color)] px-3 py-2 text-[var(--text-primary)] outline-none focus:border-[var(--accent-color)]"
+                  />
+                </div>
+                <div>
+                  <label className="text-xs text-[var(--text-secondary)]">Chips User ID</label>
+                  <input
+                    type="text"
+                    value={user.chipsId ?? ""}
+                    onChange={(e) => handlePlatformIdUpdate("chips", e.target.value)}
+                    placeholder="Enter your Chips ID"
+                    className="mt-1 w-full rounded-md border border-[var(--border-color)] bg-[var(--bg-color)] px-3 py-2 text-[var(--text-primary)] outline-none focus:border-[var(--accent-color)]"
+                  />
+                </div>
+                <div>
+                  <label className="text-xs text-[var(--text-secondary)]">Daddy Skins User ID</label>
+                  <input
+                    type="text"
+                    value={user.daddySkinsId ?? ""}
+                    onChange={(e) => handlePlatformIdUpdate("daddySkins", e.target.value)}
+                    placeholder="Enter your Daddy Skins ID"
+                    className="mt-1 w-full rounded-md border border-[var(--border-color)] bg-[var(--bg-color)] px-3 py-2 text-[var(--text-primary)] outline-none focus:border-[var(--accent-color)]"
+                  />
+                </div>
+              </div>
 
               <div>
                 <p className="mt-4 text-sm text-[var(--text-secondary)]">Select avatar</p>

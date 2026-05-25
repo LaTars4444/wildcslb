@@ -29,6 +29,9 @@ export default function RegisterPage() {
       linkedKick: false,
       avatar: "/avatars/avatar1.svg",
       xp: 0,
+      clashId: "",
+      chipsId: "",
+      daddySkinsId: "",
     };
 
     window.localStorage.setItem("wildcs_user", JSON.stringify(user));

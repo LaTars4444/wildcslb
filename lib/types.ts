@@ -11,6 +11,9 @@ export interface User {
   watchTime: number;
   vipTier: string;
   streakDays: number;
+  clashId?: string;
+  chipsId?: string;
+  daddySkinsId?: string;
 }
 
 export interface Reward {
