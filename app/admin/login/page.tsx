@@ -10,6 +10,7 @@ export default function AdminLoginPage() {
   const router = useRouter();
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
+  const isPasswordNotSet = !ADMIN_PASSWORD;
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -22,6 +23,10 @@ export default function AdminLoginPage() {
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    if (isPasswordNotSet) {
+      setError("Admin password is not configured. Set NEXT_PUBLIC_ADMIN_PASSWORD in environment variables.");
+      return;
+    }
     if (password.trim() === ADMIN_PASSWORD) {
       window.localStorage.setItem("wildcs_admin_auth", "true");
       router.push("/admin");
@@ -39,6 +44,11 @@ export default function AdminLoginPage() {
         <p className="mt-4 text-[var(--text-secondary)]">
           This page is only accessible by direct URL. Enter the admin password to unlock the WildCS admin dashboard.
         </p>
+        {isPasswordNotSet && (
+          <div className="mt-6 rounded-xl border border-yellow-500/20 bg-yellow-500/10 p-4 text-sm text-yellow-200">
+            ⚠️ Admin password not configured. Set <code className="bg-black/30 px-2 py-1 rounded">NEXT_PUBLIC_ADMIN_PASSWORD</code> in your environment variables.
+          </div>
+        )}
 
         <form onSubmit={handleSubmit} className="mt-10 space-y-6">
           <label className="block text-sm font-semibold text-[var(--text-secondary)]">
