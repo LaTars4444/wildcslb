@@ -7,7 +7,10 @@ export interface User {
   totalWagered: number;
   weeklyWagered: number;
   monthlyWagered: number;
+  lifetimeWagered: number;
+  lifetimeTokenCredits: number;
   tokens: number;
+  bonusBalance: number;
   watchTime: number;
   vipTier: string;
   streakDays: number;

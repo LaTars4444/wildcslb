@@ -47,6 +47,22 @@ npm run build
 npm run start
 ```
 
+### Lifetime wager sync
+
+This app now supports lifetime wager-based token accrual at $7.50 per token. Use the sync script to reconcile lifetime wagers and credit earned tokens:
+
+```bash
+npm run sync:wagers
+```
+
+You can automate this with a scheduler that runs every 3–15 minutes. For example, use GitHub Actions with the included workflow `.github/workflows/sync-lifetime-wagers.yml`, or run the script from a cron job:
+
+```bash
+*/5 * * * * cd /workspaces/wildcslb && npm run sync:wagers
+```
+
+Make sure `DATABASE_URL` and `SYNC_SECRET` are set in your environment.
+
 ### Notes for deployment
 
 - `DATABASE_URL` must be configured in your hosting environment.

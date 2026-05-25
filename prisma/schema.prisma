@@ -10,11 +10,14 @@ model User {
   id               String    @id @default(cuid())
   username         String    @unique
   avatar           String?
-  totalWagered     Float     @default(0)
-  weeklyWagered    Float     @default(0)
-  monthlyWagered   Float     @default(0)
-  tokens           Float     @default(0)
-  watchTime        Int       @default(0)
+  totalWagered          Float     @default(0)
+  weeklyWagered         Float     @default(0)
+  monthlyWagered        Float     @default(0)
+  lifetimeWagered       Float     @default(0)
+  lifetimeTokenCredits  Float     @default(0)
+  tokens                Float     @default(0)
+  bonusBalance          Float     @default(0)
+  watchTime             Int       @default(0)
   vipTier          String    @default("bronze")
   streakDays       Int       @default(0)
   connectedAccounts Json?

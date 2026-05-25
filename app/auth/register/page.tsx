@@ -26,6 +26,12 @@ export default function RegisterPage() {
       username,
       password,
       tokens: 0,
+      bonusBalance: 0,
+      totalWagered: 0,
+      weeklyWagered: 0,
+      monthlyWagered: 0,
+      lifetimeWagered: 0,
+      lifetimeTokenCredits: 0,
       linkedKick: false,
       avatar: "/avatars/avatar1.svg",
       xp: 0,
@@ -35,7 +41,6 @@ export default function RegisterPage() {
     };
 
     window.localStorage.setItem("wildcs_user", JSON.stringify(user));
-    window.localStorage.setItem("wildcs_tokens", "0");
     router.push("/profile");
   };
 

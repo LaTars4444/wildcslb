@@ -1,18 +1,26 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { getRankIndex, rankNames, thresholds, getNextThreshold, getMultiplier } from "@/lib/ranks";
+import { earnedTokensFromLifetime } from "@/lib/token-utils";
 
 type User = {
   username: string;
   tokens: number;
+  bonusBalance?: number;
   linkedKick?: boolean;
   avatar?: string | null;
   xp?: number;
   clashId?: string;
   chipsId?: string;
   daddySkinsId?: string;
+  totalWagered?: number;
+  weeklyWagered?: number;
+  monthlyWagered?: number;
+  lifetimeWagered?: number;
+  lifetimeTokenCredits?: number;
 };
 
 export default function ProfilePage() {
@@ -42,12 +50,77 @@ export default function ProfilePage() {
     setUser(updated);
   };
 
+  const handleAvatarUpload = (file: File) => {
+    if (!user) return;
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      const avatar = reader.result as string;
+      const updated = { ...user, avatar } as User;
+      window.localStorage.setItem("wildcs_user", JSON.stringify(updated));
+      setUser(updated);
+    };
+    reader.readAsDataURL(file);
+  };
+
   const handlePlatformIdUpdate = (platform: "clash" | "chips" | "daddySkins", value: string) => {
     if (!user) return;
     const key = platform === "clash" ? "clashId" : platform === "chips" ? "chipsId" : "daddySkinsId";
     const updated = { ...user, [key]: value } as User;
     window.localStorage.setItem("wildcs_user", JSON.stringify(updated));
     setUser(updated);
+  };
+
+  const handleImportWagersCsv = (file: File) => {
+    if (!user) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      const text = reader.result as string;
+      const lines = text.split(/\r?\n/).filter(Boolean);
+      if (lines.length === 0) return;
+
+      const headerCols = lines[0].split(/,|;/).map((s) => s.trim().toLowerCase());
+      const amountCandidates = ["amount", "wager", "bet", "stake", "value"];
+      const amountIdx = headerCols.findIndex((h) => amountCandidates.includes(h));
+      let startRow = 0;
+      if (amountIdx !== -1) startRow = 1;
+
+      let sum = 0;
+      for (let i = startRow; i < lines.length; i++) {
+        const cols = lines[i].split(/,|;/).map((s) => s.trim());
+        let v: number | null = null;
+        if (amountIdx !== -1) {
+          v = parseFloat(cols[amountIdx].replace(/[^0-9.-]/g, ""));
+        } else {
+          for (const c of cols) {
+            const n = parseFloat(c.replace(/[^0-9.-]/g, ""));
+            if (!isNaN(n)) {
+              v = n;
+              break;
+            }
+          }
+        }
+        if (v !== null && !isNaN(v)) sum += v;
+      }
+
+      const newLifetime = (user.lifetimeWagered ?? 0) + sum;
+      const newLifetimeCredits = earnedTokensFromLifetime(newLifetime);
+      const previousLifetimeCredits = user.lifetimeTokenCredits ?? 0;
+      const lifetimeDelta = Math.max(0, newLifetimeCredits - previousLifetimeCredits);
+
+      const updated: User = {
+        ...user,
+        monthlyWagered: (user.monthlyWagered ?? 0) + sum,
+        lifetimeWagered: newLifetime,
+        lifetimeTokenCredits: newLifetimeCredits,
+        totalWagered: (user.totalWagered ?? 0) + sum,
+        tokens: (user.tokens ?? 0) + lifetimeDelta,
+      };
+
+      window.localStorage.setItem("wildcs_user", JSON.stringify(updated));
+      setUser(updated);
+    };
+    reader.readAsText(file);
   };
 
   const xp = user?.xp ?? 0;
@@ -72,7 +145,9 @@ export default function ProfilePage() {
           ) : (
             <div className="mt-6 space-y-6">
               <div className="flex items-center gap-6">
-                <img src={`/ranks/rank-${rankIndex}.svg`} alt={rankName} className="h-20 w-20 rounded-md" />
+                <div className="relative h-20 w-20 overflow-hidden rounded-3xl border-2 border-[var(--accent-color)] bg-gradient-to-br from-violet-950 via-fuchsia-900 to-pink-700 p-2 shadow-[0_0_30px_rgba(168,85,247,0.3)]">
+                   <Image src={`/ranks/rank-${rankIndex}.svg`} alt={rankName} className="h-full w-full object-cover rounded-2xl" fill sizes="80px" />
+                </div>
                 <div>
                   <p className="text-sm text-[var(--text-secondary)]">{rankName}</p>
                   <p className="text-2xl font-black">{xp} XP</p>
@@ -129,12 +204,42 @@ export default function ProfilePage() {
 
               <div>
                 <p className="mt-4 text-sm text-[var(--text-secondary)]">Select avatar</p>
-                <div className="mt-2 flex gap-3">
+                <div className="mt-2 grid gap-3 sm:grid-cols-3">
                   {avatars.map((a) => (
                     <button key={a} onClick={() => handleAvatar(a)} className="rounded-md border p-1">
-                      <img src={a} alt="avatar" className="h-10 w-10 object-cover" />
+                        <Image src={a} alt="avatar" className="h-10 w-10 object-cover" fill sizes="40px" />
                     </button>
                   ))}
+                </div>
+                <div className="mt-4">
+                  <label className="inline-flex cursor-pointer items-center gap-3 rounded-full border border-[var(--border-color)] bg-[var(--bg-color)] px-4 py-3 text-sm font-semibold text-[var(--text-primary)] transition hover:border-[var(--accent-color)]">
+                    Upload a custom avatar
+                    <input
+                      type="file"
+                      accept="image/*"
+                      className="hidden"
+                      onChange={(e) => {
+                        const file = e.target.files?.[0];
+                        if (file) handleAvatarUpload(file);
+                      }}
+                    />
+                  </label>
+                </div>
+
+                <div className="mt-4">
+                  <p className="text-sm text-[var(--text-secondary)]">Import wagers (CSV)</p>
+                  <p className="text-xs text-[var(--text-secondary)]">Upload a CSV exported from your partner account. The importer sums wager amounts and credits lifetime tokens at $7.50 per token and raffle tickets at 1 per $100.</p>
+                  <div className="mt-2">
+                    <input
+                      type="file"
+                      accept=".csv,text/csv"
+                      onChange={(e) => {
+                        const f = e.target.files?.[0];
+                        if (f) handleImportWagersCsv(f);
+                      }}
+                      className="rounded-md"
+                    />
+                  </div>
                 </div>
               </div>
 

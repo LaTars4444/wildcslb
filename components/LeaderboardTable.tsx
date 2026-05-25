@@ -105,9 +105,9 @@ export default function LeaderboardTable({
                     <div className="text-xs text-[var(--text-secondary)]/60">Available</div>
                   </div>
                 </td>
-                <td className="px-4 py-4 text-sm text-[var(--text-secondary)]">.wager</td>
-                <td className="px-4 py-4 text-sm text-[var(--text-secondary)]">.tokens</td>
-                <td className="px-4 py-4 text-sm text-[var(--text-secondary)]">.watch</td>
+                  <td className="px-4 py-4 text-sm text-[var(--text-secondary)]">—</td>
+                  <td className="px-4 py-4 text-sm text-[var(--text-secondary)]">—</td>
+                  <td className="px-4 py-4 text-sm text-[var(--text-secondary)]">—</td>
                 <td className="px-4 py-4 text-sm text-[var(--accent-color)]">{item.vip}</td>
                 <td className="px-4 py-4">
                   <button

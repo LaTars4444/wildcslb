@@ -5,7 +5,13 @@ import { useState } from "react";
 export default function TokenDisplay() {
   const [tokens] = useState<number | null>(() => {
     try {
-      const raw = (typeof window !== "undefined" && window.localStorage.getItem("wildcs_tokens")) || null;
+      if (typeof window === "undefined") return null;
+      const rawUser = window.localStorage.getItem("wildcs_user");
+      if (rawUser) {
+        const parsed = JSON.parse(rawUser);
+        return parsed.tokens ?? 0;
+      }
+      const raw = window.localStorage.getItem("wildcs_tokens");
       return raw ? Number(raw) : 0;
     } catch {
       return 0;
