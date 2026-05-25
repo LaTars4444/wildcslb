@@ -51,6 +51,7 @@ export default function StorePage() {
   const [claimedRewards, setClaimedRewards] = useState<Record<string, boolean>>({});
   const [wagerInput, setWagerInput] = useState<number>(0);
   const [bonusBalance, setBonusBalance] = useState<number>(user?.bonusBalance ?? 0);
+  const [isAdmin, setIsAdmin] = useState<boolean>(false);
 
   useEffect(() => {
     const updateTimer = () => {
@@ -60,6 +61,12 @@ export default function StorePage() {
     updateTimer();
     const interval = setInterval(updateTimer, 1000);
     return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setIsAdmin(window.localStorage.getItem("wildcs_admin_auth") === "true");
+    }
   }, []);
 
 
@@ -143,6 +150,7 @@ export default function StorePage() {
           <p className="mt-4 max-w-3xl text-[var(--text-secondary)]">
             Wager meter, stream balance control, and token redemption.
           </p>
+          <p className="mt-2 text-xs text-[var(--text-secondary)]">Payouts are processed within 24 hours of a successful claim.</p>
         </section>
 
         {/* All rewards are wager-based and claimable via the wager meter. */}
@@ -176,11 +184,10 @@ export default function StorePage() {
               </div>
             </div>
           </div>
-          <div className="mt-6 rounded-[1.75rem] border border-[var(--border-color)] bg-[var(--elevated-color)]/80 p-6">
+            <div className="mt-6 rounded-[1.75rem] border border-[var(--border-color)] bg-[var(--elevated-color)]/80 p-6">
             <p className="text-sm uppercase tracking-[0.18em] text-[var(--text-secondary)]">Wagered this week</p>
             <p className="mt-2 text-2xl font-black text-[var(--text-primary)]">${(raffleTickets * 100).toLocaleString()}</p>
-            <button 
-              onClick={() => setRaffleTickets(prev => prev + 1)}
+            <button
               className="mt-4 rounded-full border border-[var(--border-color)] bg-[var(--bg-color)] px-4 py-2 text-sm font-semibold transition hover:border-[var(--accent-color)]"
             >
               View raffle history
@@ -213,9 +220,15 @@ export default function StorePage() {
 
             <div className="mt-4">
               <p className="text-sm text-[var(--text-secondary)]">Wager to earn lifetime tokens: every $7.50 wagered = 1 token. Monthly wager milestones unlock separate bonus rewards.</p>
-              <div className="mt-3 flex gap-2">
-                <input type="number" value={wagerInput} onChange={(e) => setWagerInput(Number(e.target.value))} className="w-36 rounded-md border border-[var(--border-color)] bg-[var(--bg-color)] px-3 py-2 text-[var(--text-primary)] outline-none" />
-                <button onClick={() => { if (wagerInput > 0) { handleAddWager(wagerInput); setWagerInput(0); } }} className="rounded-full bg-[var(--accent-color)] px-4 py-2 text-sm font-black">Add wager</button>
+              <div className="mt-3">
+                {isAdmin ? (
+                  <div className="flex gap-2">
+                    <input type="number" value={wagerInput} onChange={(e) => setWagerInput(Number(e.target.value))} className="w-36 rounded-md border border-[var(--border-color)] bg-[var(--bg-color)] px-3 py-2 text-[var(--text-primary)] outline-none" />
+                    <button onClick={() => { if (wagerInput > 0) { handleAddWager(wagerInput); setWagerInput(0); } }} className="rounded-full bg-[var(--accent-color)] px-4 py-2 text-sm font-black">Add wager</button>
+                  </div>
+                ) : (
+                  <p className="text-sm text-[var(--text-secondary)]">Manual wager entry is restricted to admins.</p>
+                )}
               </div>
             </div>
           </div>
@@ -226,7 +239,7 @@ export default function StorePage() {
               return (
                 <div key={milestone.id} className="rounded-[1.75rem] border border-[var(--border-color)] bg-[var(--bg-color)]/80 p-5 text-center">
                   <p className="text-sm uppercase tracking-[0.18em] text-[var(--text-secondary)]">{milestone.label}</p>
-                  <p className="mt-2 text-3xl font-black text-[var(--text-primary)]">{milestone.target.toLocaleString()}</p>
+                  <p className="mt-2 text-3xl font-black text-[var(--text-primary)]">{milestone.target.toLocaleString()} wagered</p>
                   <p className="mt-2 text-sm text-[var(--accent-color)]">+${milestone.reward} bonus</p>
                   <button
                     disabled={!eligible || claimedRewards[milestone.id]}
@@ -302,7 +315,7 @@ export default function StorePage() {
               return (
                 <div key={milestone.id} className="rounded-[1.75rem] border border-[var(--border-color)] bg-[var(--bg-color)]/80 p-5 text-center">
                   <p className="text-sm uppercase tracking-[0.18em] text-[var(--text-secondary)]">{milestone.label}</p>
-                  <p className="mt-2 text-3xl font-black text-[var(--text-primary)]">{milestone.target.toLocaleString()}</p>
+                  <p className="mt-2 text-3xl font-black text-[var(--text-primary)]">{milestone.target.toLocaleString()} wagered</p>
                   <p className="mt-2 text-sm text-[var(--accent-color)]">+{milestone.reward} tokens</p>
                   <button
                     disabled={!eligible || claimedRewards[milestone.id]}

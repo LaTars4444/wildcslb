@@ -82,7 +82,7 @@ export default function DashboardPage() {
             <p className="text-sm uppercase tracking-[0.22em] text-[var(--accent-color)]">Milestones</p>
             <h2 className="mt-3 text-2xl font-black text-[var(--text-primary)]">Weekly wager targets</h2>
             <p className="mt-3 text-[var(--text-secondary)]">
-              5k wagered = $5, 10k wagered = $15, 20k wagered = $40.
+              Milestones are based on wagered amounts (e.g., 5k wagered = $5 bonus, 10k wagered = $15 bonus, 20k wagered = $40 bonus).
             </p>
           </div>
         </section>
